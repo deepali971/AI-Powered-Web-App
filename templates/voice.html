@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Assistant</title>
+</head>
+<body>
+    <h1>Voice Assistant</h1>
+    <button onclick="startListening()">Start Listening</button>
+    <p><strong>You said:</strong> <span id="query">Waiting...</span></p>
+    <p><strong>Response:</strong> <span id="response">...</span></p>
+    <img id="generatedImage" style="display:none; max-width: 400px; margin-top: 10px;" />
+
+    <script>
+        function startListening() {
+            document.getElementById('query').innerText = "Listening...";
+            document.getElementById('response').innerText = "...";
+
+            fetch('/listen')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('query').innerText = data.text;
+                    document.getElementById('response').innerText = data.response;
+                    speakText(data.response);
+
+                    if (data.image) {
+                        let imgElement = document.getElementById('generatedImage');
+                        imgElement.src = "data:image/png;base64," + data.image;
+                        imgElement.style.display = "block";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('query').innerText = "Error recognizing voice.";
+                    document.getElementById('response').innerText = "Error generating response.";
+                });
+        }
+
+        function speakText(text) {
+            let speech = new SpeechSynthesisUtterance();
+            speech.text = text;
+            window.speechSynthesis.speak(speech);
+        }
+    </script>
+</body>
+</html>

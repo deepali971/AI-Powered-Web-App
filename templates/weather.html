@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+</head>
+<body>
+    <h1>Weather Dashboard</h1>
+    <a href="/">Go to Home</a>
+
+    <form id="weatherForm">
+        <input type="text" id="city" placeholder="Enter city name" required>
+        <button type="submit">Get Weather</button>
+    </form>
+    <p id="weatherResult"></p>
+    <div id="weatherOutput" style="display:none;">
+        <h2>Weather Details:</h2>
+        <p id="temperature"></p>
+        <p id="humidity"></p>
+        <p id="weatherDescription"></p>
+    </div>
+
+    <script>
+        document.getElementById('weatherForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const city = document.getElementById('city').value;
+            const response = await fetch(`/weather_data?city=${city}`);
+            const result = await response.json();
+            console.log(result); // Log the entire response for debugging
+
+            if (result.error) {
+                document.getElementById('weatherResult').innerText = result.error;
+            } else {
+                document.getElementById('weatherOutput').style.display = 'block';
+                document.getElementById('temperature').innerText = `Temperature: ${result.temperature}°C`;
+                document.getElementById('humidity').innerText = `Humidity: ${result.humidity}%`;
+                document.getElementById('weatherDescription').innerText = `Weather: ${result.weather}`;
+            }
+        };
+    </script>
+</body>
+</html>

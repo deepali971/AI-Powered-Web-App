@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+</head>
+<body>
+    <h1>Sentiment Analysis</h1>
+    <a href="/">Go to Home</a>
+
+    <form id="sentimentForm">
+        <textarea id="sentimentText" placeholder="Enter text for sentiment analysis"></textarea>
+        <button type="submit">Analyze Sentiment</button>
+    </form>
+    <p id="sentimentResult"></p>
+    <script>
+        document.getElementById('sentimentForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const text = document.getElementById('sentimentText').value;
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text })
+            });
+            const result = await response.json();
+            document.getElementById('sentimentResult').innerText = `Polarity: ${result.polarity}, Subjectivity: ${result.subjectivity}, Classification: ${result.classification}`;
+        };
+    </script>
+</body>
+</html>
