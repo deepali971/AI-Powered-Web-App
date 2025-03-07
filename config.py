@@ -1,0 +1,10 @@
+# Configuration file for API keys
+
+# OpenWeather API Key
+OPENWEATHER_API_KEY = 'ca143c002e5243d728b17b496a8e734e'
+
+# NewsAPI Key
+NEWS_API_KEY = '3d2051db41124ee38f9423003ab599c0'
+
+# Google Calendar API Key
+GOOGLE_CALENDAR_API_KEY = 'YOUR_GOOGLE_CALENDAR_API_KEY'
